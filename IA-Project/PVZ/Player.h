@@ -25,12 +25,12 @@ protected:
 	void OnInitialize() override;
 	void OnUpdate() override;
 
-	friend class PlantAction_Idle;
-	friend class PlantAction_Moving;
-	friend class PlantAction_Pass;
+	friend class PlayerAction_Idle;
+	friend class PlayerAction_Moving;
+	friend class PlayerAction_Pass;
 
-	friend class PlantCondition_NoEnemy;
-	friend class PlantCondition_EnemyArea;
-	friend class PlantCondition_EnemyContact;
+	friend class PlayerCondition_NoEnemy;
+	friend class PlayerCondition_EnemyArea;
+	friend class PlayerCondition_EnemyContact;
 };
 
