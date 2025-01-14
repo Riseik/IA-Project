@@ -1,5 +1,8 @@
 #pragma once
-class RugbyScene
+
+#include "GameManager.h"
+
+class RugbyScene : public Scene
 {
 };
 
