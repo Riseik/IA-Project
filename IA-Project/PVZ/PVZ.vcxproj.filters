@@ -79,6 +79,9 @@
     <ClCompile Include="PlayerCondition.cpp">
       <Filter>Rugby\PlayerStateMachine</Filter>
     </ClCompile>
+    <ClCompile Include="Goal.cpp">
+      <Filter>Rugby</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -143,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="PlayerCondition.h">
       <Filter>Rugby\PlayerStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Goal.h">
+      <Filter>Rugby</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

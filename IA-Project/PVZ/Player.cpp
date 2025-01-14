@@ -21,6 +21,7 @@ const char* Player::GetStateName(State state) const
 
 void Player::OnInitialize()
 {
+
 }
 
 void Player::OnUpdate()
