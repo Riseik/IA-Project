@@ -3,7 +3,7 @@
 #include "Action.h"
 #include "Player.h"
 
-class PlantCondition_NoEnemy : public Action<Player>
+class PlayerCondition_NoEnemy : public Action<Player>
 {
 public:
 	void OnStart(Player* pPlayer) override {}
@@ -11,7 +11,7 @@ public:
 	void OnEnd(Player* pPlayer) override {}
 };
 
-class PlantCondition_EnemyArea : public Action<Player>
+class PlayerCondition_EnemyArea : public Action<Player>
 {
 
 public:
@@ -20,7 +20,7 @@ public:
 	void OnEnd(Player* pPlayer) override {};
 };
 
-class PlantCondition_EnemyContact : public Action<Player>
+class PlayerCondition_EnemyContact : public Action<Player>
 {
 
 public:
