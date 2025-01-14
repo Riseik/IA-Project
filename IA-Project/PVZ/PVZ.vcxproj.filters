@@ -19,6 +19,9 @@
     <Filter Include="Rugby">
       <UniqueIdentifier>{e8f36dab-b4fa-4cfe-8c13-5da8bee1f5e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rugby\PlayerStateMachine">
+      <UniqueIdentifier>{a699740b-1164-4482-b383-1ba22da7ae27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -66,6 +69,15 @@
     </ClCompile>
     <ClCompile Include="RugbyScene.cpp">
       <Filter>Rugby</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Rugby</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAction.cpp">
+      <Filter>Rugby\PlayerStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCondition.cpp">
+      <Filter>Rugby\PlayerStateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +134,15 @@
     </ClInclude>
     <ClInclude Include="RugbyScene.h">
       <Filter>Rugby</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Rugby</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAction.h">
+      <Filter>Rugby\PlayerStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCondition.h">
+      <Filter>Rugby\PlayerStateMachine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
