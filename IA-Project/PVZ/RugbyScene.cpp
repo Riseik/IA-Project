@@ -1,6 +1,7 @@
 #include "RugbyScene.h"
 
 #include "Player.h"
+#include "Ball.h"
 #include "Debug.h"
 
 void RugbyScene::OnInitialize()
@@ -27,6 +28,11 @@ void RugbyScene::OnInitialize()
 		playerStartX += playerGapX;
 		playerGapX = -playerGapX;
 	}
+
+	float ballRadius = height * 0.020f;
+
+	ball = CreateEntity<Ball>(ballRadius, { 255, 128, 0 });
+	ball->SetPosition(pTeam1[2]->GetPosition().x, pTeam1[2]->GetPosition().y, 0.f, 0.5f);
 	
 	playerWithBall = pTeam1[2];
 }
@@ -65,8 +71,7 @@ void RugbyScene::OnUpdate()
 
 	if (playerWithBall != nullptr)
 	{
-		sf::Vector2f position = playerWithBall->GetPosition();
-		Debug::DrawCircle(position.x, position.y, 15, { 255, 128, 0 });
+		ball->SetPosition(playerWithBall->GetPosition().x, playerWithBall->GetPosition().y, 0.5f, 0.5f);
 	}
 
 	if (playerSelected != nullptr)
@@ -77,6 +82,9 @@ void RugbyScene::OnUpdate()
 
 	for (int i = 0; i < PLAYER_PER_TEAM; i++)
 	{
+		if (playerWithBall == nullptr)
+			break;
+
 		Player** pTeam;
 
 		if (isInTeam(playerWithBall, pTeam1))
@@ -188,4 +196,5 @@ void RugbyScene::Pass()
 {
 	Player* closestPlayer = GetClosestPlayer(pTeam1);
 	playerWithBall = closestPlayer;
+	/*ball->GoToPosition(closestPlayer->GetPosition().x, closestPlayer->GetPosition().y, 300.f);*/
 }

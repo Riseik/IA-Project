@@ -5,6 +5,7 @@
 #define PLAYER_PER_TEAM 5
 
 class Player;
+class Ball;
 
 namespace sf 
 {
@@ -13,20 +14,23 @@ namespace sf
 
 class RugbyScene : public Scene
 {
-	Player* playerSelected;
-	Player* playerWithBall;
 
 public:
 	enum Tag {
 		PLAYER,
-		GOAL
+		BALL
 	};
 
 	int width;
 	int height;
+	
+	Ball* ball;
 
 	Player* pTeam1[PLAYER_PER_TEAM];
 	Player* pTeam2[PLAYER_PER_TEAM];
+	
+	Player* playerSelected;
+	Player* playerWithBall;
 
 	bool passPossible[5] = {false, false, false, false, false};
 
