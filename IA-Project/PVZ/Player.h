@@ -11,8 +11,10 @@ class Player : public Entity
 
 	enum State
 	{
-		Idle,
-		Moving,
+		Attack,
+		Support,
+		Block,
+		GetBack,
 		Pass,
 
 		Count
@@ -22,6 +24,7 @@ class Player : public Entity
 
 public:
 	const char* GetStateName(State state) const;
+	void IsImmune();
 
 protected:
 	void OnInitialize() override;
@@ -34,8 +37,8 @@ protected:
 	friend class PlayerAction_GetBack;
 	friend class PlayerAction_Pass;
 
-	friend class PlantCondition_NooEnemyInArea;
-	friend class PlantCondition_CanPass;
-	friend class PlantCondition_EnemyHaveTheBall;
+	friend class PlayerCondition_NoEnemyInArea;
+	friend class PlayerCondition_CanPass;
+	friend class PlayerCondition_EnemyHaveTheBall;
 };
 

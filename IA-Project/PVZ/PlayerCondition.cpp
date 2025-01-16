@@ -1,16 +1,17 @@
 #include "PlayerCondition.h"
+#pragma once
 
-bool PlantCondition_NoEnemyInArea::OnTest(Player* player)
+bool PlayerCondition_NoEnemyInArea::OnTest(Player* owner)
 {
 	return false;
 }
 
-bool PlantCondition_CanPass::OnTest(Player* player)
+bool PlayerCondition_CanPass::OnTest(Player* owner)
 {
 	return false;
 }
 
-bool PlantCondition_EnemyHaveTheBall::OnTest(Player* player)
+bool PlayerCondition_EnemyHaveTheBall::OnTest(Player* owner)
 {
 	return false;
 }

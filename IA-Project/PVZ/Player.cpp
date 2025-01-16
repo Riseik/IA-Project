@@ -1,11 +1,21 @@
 #include "Player.h"
-#include "StateMachine.h"
 #include "RugbyScene.h"
 
+#include "StateMachine.h"
 #include "PlayerCondition.h"
 #include "PlayerAction.h"
 
 #include "Debug.h"
+
+void Player::OnInitialize()
+{
+	SetTag(RugbyScene::Tag::PLAYER);
+	mpStateMachine = new StateMachine<Player>(this, State::Count);
+
+	{
+		Action<Player>* pAttack = mpStateMachine->CreateAction<PlayerAction_Attack>(State::Attack);
+	}
+}
 
 const char* Player::GetStateName(State state) const
 {
@@ -19,23 +29,11 @@ const char* Player::GetStateName(State state) const
 	return nullptr;
 }
 
-void Player::OnInitialize()
-{
-	SetTag(RugbyScene::Tag::PLAYER);
-}
 
 void Player::OnUpdate()
 {
-	mpStateMachine = new StateMachine<Player>(this, State::Count);
-	if (IsTag(RugbyScene::Tag::IMMUNE))
-	{
-		elapsedTime += GameManager::Get()->GetDeltaTime();
-		if (elapsedTime > 2.f)
-		{
-			SetTag(RugbyScene::Tag::PLAYER);
-			elapsedTime = 0.f;
-		}
-	}
+
+	mpStateMachine->Update();
 }
 
 void Player::OnCollision(Entity* pEntity)
@@ -46,6 +44,19 @@ void Player::OnCollision(Entity* pEntity)
 		{
 			GetScene<RugbyScene>()->playerWithBall = this;
 			SetTag(RugbyScene::Tag::IMMUNE);
+		}
+	}
+}
+
+void Player::IsImmune()
+{
+	if (IsTag(RugbyScene::Tag::IMMUNE))
+	{
+		elapsedTime += GameManager::Get()->GetDeltaTime();
+		if (elapsedTime > 2.f)
+		{
+			SetTag(RugbyScene::Tag::PLAYER);
+			elapsedTime = 0.f;
 		}
 	}
 }

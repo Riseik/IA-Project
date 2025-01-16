@@ -3,7 +3,7 @@
 #include "Action.h"
 #include "Player.h"
 
-class PlayerCondition_Attack : public Action<Player>
+class PlayerAction_Attack : public Action<Player>
 {
 public:
 	void OnStart(Player* pPlayer) override {}
@@ -11,7 +11,7 @@ public:
 	void OnEnd(Player* pPlayer) override {}
 };
 
-class PlayerCondition_Support : public Action<Player>
+class PlayerAction_Support : public Action<Player>
 {
 
 public:
@@ -20,18 +20,7 @@ public:
 	void OnEnd(Player* pPlayer) override {};
 };
 
-class PlayerCondition_Block : public Action<Player>
-{
-
-public:
-	void OnStart(Player* pPlayer) override;
-	void OnUpdate(Player* pPlayer) override;
-	void OnEnd(Player* pPlayer) override {};
-
-	friend Player;
-};
-
-class PlayerCondition_GetBack : public Action<Player>
+class PlayerAction_Block : public Action<Player>
 {
 
 public:
@@ -42,7 +31,18 @@ public:
 	friend Player;
 };
 
-class PlayerCondition_Pass : public Action<Player>
+class PlayerAction_GetBack : public Action<Player>
+{
+
+public:
+	void OnStart(Player* pPlayer) override;
+	void OnUpdate(Player* pPlayer) override;
+	void OnEnd(Player* pPlayer) override {};
+
+	friend Player;
+};
+
+class PlayerAction_Pass : public Action<Player>
 {
 
 public:
