@@ -45,11 +45,13 @@ private:
 	bool CheckPassPossible();
 	void Pass();
 
+	void OnGoal();
+	void RepositionPlayers();
+	void GiveRandomPlayerInTeamBall(Player* pTeam[]);
 public:
 	void OnInitialize() override;
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
 
-	void OnGoal();
 };
 
