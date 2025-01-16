@@ -1,3 +1,5 @@
+#include <list>
+
 #include "RugbyScene.h"
 
 #include "Player.h"
@@ -144,13 +146,16 @@ float RugbyScene::GetPlayerDistance(Player* p1, Player* p2)
 	return distance;
 }
 
-Player* RugbyScene::GetClosestPlayer(Player* pTeam[])
+Player* RugbyScene::GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass)
 {
 	int indexClosest = 0;
 	float closestDistance = 100000.f;
 
 	for (int i = 0; i < PLAYER_PER_TEAM; i++)
 	{
+		if (sortedByPossiblePass && !passPossible[i])
+			continue;
+
 		if (pTeam[i] == playerWithBall)
 			continue;
 
@@ -192,9 +197,20 @@ bool RugbyScene::TryPassPossible(Player* player)
 	return true;
 }
 
+bool RugbyScene::CheckPassPossible()
+{
+	bool possible = false;
+	for (bool playerAvailable : passPossible)
+	{
+		if (playerAvailable) possible = true;
+	}
+	return possible;
+}
+
 void RugbyScene::Pass()
 {
-	Player* closestPlayer = GetClosestPlayer(pTeam1);
+	if (!CheckPassPossible()) return;
+	Player* closestPlayer = GetClosestPlayer(pTeam1, true);
 	playerWithBall = closestPlayer;
 	/*ball->GoToPosition(closestPlayer->GetPosition().x, closestPlayer->GetPosition().y, 300.f);*/
 }

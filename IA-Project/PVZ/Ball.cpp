@@ -4,7 +4,7 @@
 
 void Ball::OnInitialize()
 {
-
+	SetTag(RugbyScene::Tag::BALL);
 }
 
 void Ball::OnUpdate()

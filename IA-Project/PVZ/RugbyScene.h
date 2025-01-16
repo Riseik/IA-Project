@@ -38,10 +38,11 @@ public:
 private:
 	void TrySetSelectedEntity(Player* player, int x, int y);
 	float GetPlayerDistance(Player* p1, Player* p2);
-	Player* GetClosestPlayer(Player* pTeam[]);
+	Player* GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass);
 	bool isInTeam(Player* player, Player* pTeam[]);
 
 	bool TryPassPossible(Player* player);
+	bool CheckPassPossible();
 	void Pass();
 
 public:
