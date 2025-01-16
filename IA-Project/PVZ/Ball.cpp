@@ -21,4 +21,5 @@ void Ball::OnCollision(Entity* pEntity)
 	{
 		GetScene<RugbyScene>()->playerWithBall = (Player*)pEntity;
 	}
+
 }

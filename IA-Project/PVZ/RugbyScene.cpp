@@ -101,7 +101,22 @@ void RugbyScene::OnUpdate()
 		}
 		passPossible[i] = TryPassPossible(pTeam[i]);
 
-		if (passPossible[i])
+		int indexOptimalPass = -1;
+		if (!CheckPassPossible()) indexOptimalPass = -1;
+		else
+		{
+			Player* closestPlayer = GetClosestPlayer(pTeam, true);
+			for (int i = 0; i < PLAYER_PER_TEAM; ++i) {
+				if (pTeam[i] == closestPlayer) {
+					indexOptimalPass = i;
+					break;
+				}
+			}
+		}
+
+		if (i == indexOptimalPass)
+			Debug::DrawLine(playerWithBall->GetPosition().x, playerWithBall->GetPosition().y, pTeam[i]->GetPosition().x, pTeam[i]->GetPosition().y, sf::Color::Blue);
+		else if (passPossible[i])
 			Debug::DrawLine(playerWithBall->GetPosition().x, playerWithBall->GetPosition().y, pTeam[i]->GetPosition().x, pTeam[i]->GetPosition().y, sf::Color::Green);
 		else
 			Debug::DrawLine(playerWithBall->GetPosition().x, playerWithBall->GetPosition().y, pTeam[i]->GetPosition().x, pTeam[i]->GetPosition().y, sf::Color::Red);
@@ -119,11 +134,37 @@ void RugbyScene::OnGoal()
 	if (isInTeam(playerWithBall, pTeam1))
 	{
 		Debug::DrawText(100, 100, "GOAL", 1.f, 1.f, sf::Color::Green);
+		GiveRandomPlayerInTeamBall(pTeam2);
 	}
 	else
 	{
 		Debug::DrawText(100, 100, "GOAL", 1.f, 1.f, sf::Color::Red);
+		GiveRandomPlayerInTeamBall(pTeam1);
 	}
+	RepositionPlayers();
+}
+
+void RugbyScene::RepositionPlayers()
+{
+	float playerStartY = height / (PLAYER_PER_TEAM * 2.f);
+	float playerGapY = height / (float)PLAYER_PER_TEAM;
+
+	float playerStartX = width * 0.35f;
+	float playerGapX = -(width * 0.05f);
+
+	for (int i = 0; i < PLAYER_PER_TEAM; i++) {
+		pTeam1[i]->SetPosition(playerStartX, playerStartY, 0.f, 0.5f);
+		pTeam2[i]->SetPosition(width - playerStartX, playerStartY, 0.f, 0.5f);
+
+		playerStartY += playerGapY;
+		playerStartX += playerGapX;
+		playerGapX = -playerGapX;
+	}
+}
+
+void RugbyScene::GiveRandomPlayerInTeamBall(Player* pTeam[])
+{
+	playerWithBall = pTeam[std::rand() % 5];
 }
 
 void RugbyScene::TrySetSelectedEntity(Player* player, int x, int y)
@@ -185,7 +226,7 @@ bool RugbyScene::isInTeam(Player* player, Player* pTeam[])
 
 bool RugbyScene::TryPassPossible(Player* player)
 {
-	if (sqrt(GetPlayerDistance(playerWithBall, player)) > 200)
+	if (sqrt(GetPlayerDistance(playerWithBall, player)) > 300)
 		return false;
 
 	if (isInTeam(playerWithBall, pTeam1) && playerWithBall->GetPosition().x < player->GetPosition().x)
