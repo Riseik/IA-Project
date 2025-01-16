@@ -39,6 +39,9 @@ protected:
 
 	friend class PlayerCondition_NoEnemyInArea;
 	friend class PlayerCondition_CanPass;
-	friend class PlayerCondition_EnemyHaveTheBall;
+	friend class PlayerCondition_BallInEnemyTeam;
+	friend class PlayerCondition_HaveBall;
+	friend class PlayerCondition_BallPlayerFront;
+	friend class PlayerCondition_BallPlayerBehind;
 };
 
