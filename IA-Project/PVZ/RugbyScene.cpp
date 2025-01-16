@@ -1,6 +1,9 @@
+#include <list>
+
 #include "RugbyScene.h"
 
 #include "Player.h"
+#include "Ball.h"
 #include "Debug.h"
 
 void RugbyScene::OnInitialize()
@@ -27,6 +30,11 @@ void RugbyScene::OnInitialize()
 		playerStartX += playerGapX;
 		playerGapX = -playerGapX;
 	}
+
+	float ballRadius = height * 0.020f;
+
+	ball = CreateEntity<Ball>(ballRadius, { 255, 128, 0 });
+	ball->SetPosition(pTeam1[2]->GetPosition().x, pTeam1[2]->GetPosition().y, 0.f, 0.5f);
 	
 	playerWithBall = pTeam1[2];
 }
@@ -65,8 +73,7 @@ void RugbyScene::OnUpdate()
 
 	if (playerWithBall != nullptr)
 	{
-		sf::Vector2f position = playerWithBall->GetPosition();
-		Debug::DrawCircle(position.x, position.y, 15, { 255, 128, 0 });
+		ball->SetPosition(playerWithBall->GetPosition().x, playerWithBall->GetPosition().y, 0.5f, 0.5f);
 	}
 
 	if (playerSelected != nullptr)
@@ -77,6 +84,9 @@ void RugbyScene::OnUpdate()
 
 	for (int i = 0; i < PLAYER_PER_TEAM; i++)
 	{
+		if (playerWithBall == nullptr)
+			break;
+
 		Player** pTeam;
 
 		if (isInTeam(playerWithBall, pTeam1))
@@ -136,13 +146,16 @@ float RugbyScene::GetPlayerDistance(Player* p1, Player* p2)
 	return distance;
 }
 
-Player* RugbyScene::GetClosestPlayer(Player* pTeam[])
+Player* RugbyScene::GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass)
 {
 	int indexClosest = 0;
 	float closestDistance = 100000.f;
 
 	for (int i = 0; i < PLAYER_PER_TEAM; i++)
 	{
+		if (sortedByPossiblePass && !passPossible[i])
+			continue;
+
 		if (pTeam[i] == playerWithBall)
 			continue;
 
@@ -184,8 +197,20 @@ bool RugbyScene::TryPassPossible(Player* player)
 	return true;
 }
 
+bool RugbyScene::CheckPassPossible()
+{
+	bool possible = false;
+	for (bool playerAvailable : passPossible)
+	{
+		if (playerAvailable) possible = true;
+	}
+	return possible;
+}
+
 void RugbyScene::Pass()
 {
-	Player* closestPlayer = GetClosestPlayer(pTeam1);
+	if (!CheckPassPossible()) return;
+	Player* closestPlayer = GetClosestPlayer(pTeam1, true);
 	playerWithBall = closestPlayer;
+	/*ball->GoToPosition(closestPlayer->GetPosition().x, closestPlayer->GetPosition().y, 300.f);*/
 }

@@ -5,6 +5,7 @@
 #define PLAYER_PER_TEAM 5
 
 class Player;
+class Ball;
 
 namespace sf 
 {
@@ -13,30 +14,35 @@ namespace sf
 
 class RugbyScene : public Scene
 {
-	Player* playerSelected;
-	Player* playerWithBall;
 
 public:
 	enum Tag {
 		PLAYER,
-		GOAL
+		IMMUNE,
+		BALL
 	};
 
 	int width;
 	int height;
+	
+	Ball* ball;
 
 	Player* pTeam1[PLAYER_PER_TEAM];
 	Player* pTeam2[PLAYER_PER_TEAM];
+	
+	Player* playerSelected;
+	Player* playerWithBall;
 
 	bool passPossible[5] = {false, false, false, false, false};
 
 private:
 	void TrySetSelectedEntity(Player* player, int x, int y);
 	float GetPlayerDistance(Player* p1, Player* p2);
-	Player* GetClosestPlayer(Player* pTeam[]);
+	Player* GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass);
 	bool isInTeam(Player* player, Player* pTeam[]);
 
 	bool TryPassPossible(Player* player);
+	bool CheckPassPossible();
 	void Pass();
 
 public:
