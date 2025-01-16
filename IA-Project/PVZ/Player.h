@@ -25,12 +25,14 @@ protected:
 	void OnInitialize() override;
 	void OnUpdate() override;
 
-	friend class PlayerAction_Idle;
-	friend class PlayerAction_Moving;
+	friend class PlayerAction_Attack;
+	friend class PlayerAction_Support;
+	friend class PlayerAction_Block;
+	friend class PlayerAction_GetBack;
 	friend class PlayerAction_Pass;
 
-	friend class PlayerCondition_NoEnemy;
-	friend class PlayerCondition_EnemyArea;
-	friend class PlayerCondition_EnemyContact;
+	friend class PlantCondition_NooEnemyInArea;
+	friend class PlantCondition_CanPass;
+	friend class PlantCondition_EnemyHaveTheBall;
 };
 
