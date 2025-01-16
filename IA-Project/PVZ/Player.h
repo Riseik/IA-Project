@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "RugbyScene.h"
 
 template<typename T>
 class StateMachine;
@@ -21,15 +22,21 @@ class Player : public Entity
 	};
 
 	float elapsedTime = 0.f;
+	float speed = 100.f;
+
 
 public:
+
 	const char* GetStateName(State state) const;
 	void IsImmune();
+	void SetPlayerState(int a);
 
 protected:
 	void OnInitialize() override;
 	void OnUpdate() override;
 	void OnCollision(Entity* pEntity) override;
+
+	RugbyScene* playerScene;
 
 	friend class PlayerAction_Attack;
 	friend class PlayerAction_Support;

@@ -2,6 +2,7 @@
 
 #include "RugbyScene.h"
 
+#include "StateMachine.h"
 #include "Player.h"
 #include "Ball.h"
 #include "Debug.h"
@@ -22,9 +23,12 @@ void RugbyScene::OnInitialize()
 	for (int i = 0; i < PLAYER_PER_TEAM; i++) {
 		pTeam1[i] = CreateEntity<Player>(playerRadius, sf::Color::Green);
 		pTeam1[i]->SetPosition(playerStartX, playerStartY, 0.f, 0.5f);
+		pTeam1[i]->SetPlayerState(1);
+	
 
 		pTeam2[i] = CreateEntity<Player>(playerRadius, sf::Color::Red);
 		pTeam2[i]->SetPosition(width - playerStartX, playerStartY, 0.f, 0.5f);
+		pTeam2[i]->SetPlayerState(2);
 
 		playerStartY += playerGapY;
 		playerStartX += playerGapX;
@@ -37,6 +41,7 @@ void RugbyScene::OnInitialize()
 	ball->SetPosition(pTeam1[2]->GetPosition().x, pTeam1[2]->GetPosition().y, 0.f, 0.5f);
 	
 	playerWithBall = pTeam1[2];
+	playerWithBall->SetPlayerState(0);
 }
 
 void RugbyScene::OnEvent(const sf::Event& event)

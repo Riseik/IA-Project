@@ -39,11 +39,10 @@ private:
 	void TrySetSelectedEntity(Player* player, int x, int y);
 	float GetPlayerDistance(Player* p1, Player* p2);
 	Player* GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass);
-	bool isInTeam(Player* player, Player* pTeam[]);
+
 
 	bool TryPassPossible(Player* player);
 	bool CheckPassPossible();
-	void Pass();
 
 	void OnGoal();
 	void RepositionPlayers();
@@ -52,6 +51,10 @@ public:
 	void OnInitialize() override;
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
+
+	bool isInTeam(Player* player, Player* pTeam[]);
+	void Pass();
+
 
 };
 

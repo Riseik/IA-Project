@@ -11,7 +11,9 @@ void Player::OnInitialize()
 {
 	SetTag(RugbyScene::Tag::PLAYER);
 	mpStateMachine = new StateMachine<Player>(this, State::Count);
+	playerScene = GetScene<RugbyScene>();
 
+	
 	//Attack
 	{
 		Action<Player>* pAttack = mpStateMachine->CreateAction<PlayerAction_Attack>(State::Attack);
@@ -22,10 +24,11 @@ void Player::OnInitialize()
 			auto condition = transition->AddCondition<PlayerCondition_CanPass>();
 		}
 	}
+	
 
 	//Support
 	{
-		Action<Player>* pSupport = mpStateMachine->CreateAction<PlayerAction_Attack>(State::Support);
+		Action<Player>* pSupport = mpStateMachine->CreateAction<PlayerAction_Support>(State::Support);
 
 		//-> Attack
 		{
@@ -46,7 +49,7 @@ void Player::OnInitialize()
 
 	//Block
 	{
-		Action<Player>* pBlock = mpStateMachine->CreateAction<PlayerAction_Attack>(State::Block);
+		Action<Player>* pBlock = mpStateMachine->CreateAction<PlayerAction_Block>(State::Block);
 
 		//-> Attack
 		{
@@ -67,7 +70,7 @@ void Player::OnInitialize()
 
 	//GetBack
 	{
-		Action<Player>* pGetBack = mpStateMachine->CreateAction<PlayerAction_Attack>(State::GetBack);
+		Action<Player>* pGetBack = mpStateMachine->CreateAction<PlayerAction_GetBack>(State::GetBack);
 
 		//-> Support
 		{
@@ -83,7 +86,7 @@ void Player::OnInitialize()
 
 	//Pass
 	{
-		Action<Player>* pPass = mpStateMachine->CreateAction<PlayerAction_Attack>(State::Pass);
+		Action<Player>* pPass = mpStateMachine->CreateAction<PlayerAction_Pass>(State::Pass);
 
 		//-> GetBack
 		{
@@ -96,6 +99,8 @@ void Player::OnInitialize()
 			auto condition = transition->AddCondition<PlayerCondition_BallInEnemyTeam>();
 		}
 	}
+
+
 }
 
 const char* Player::GetStateName(State state) const
@@ -119,13 +124,14 @@ void Player::OnUpdate()
 	mpStateMachine->Update();
 }
 
+
 void Player::OnCollision(Entity* pEntity)
 {
 	if (pEntity->IsTag(RugbyScene::Tag::PLAYER))
 	{
-		if (GetScene<RugbyScene>()->playerWithBall == pEntity)
+		if (playerScene->playerWithBall == pEntity)
 		{
-			GetScene<RugbyScene>()->playerWithBall = this;
+			playerScene->playerWithBall = this;
 			SetTag(RugbyScene::Tag::IMMUNE);
 		}
 	}
@@ -142,4 +148,31 @@ void Player::IsImmune()
 			elapsedTime = 0.f;
 		}
 	}
+}
+
+void Player::SetPlayerState(int state)
+{
+	switch (state)
+	{
+	case 0:
+		mpStateMachine->SetState(State::Attack);
+		break;
+	case 1:
+		mpStateMachine->SetState(State::Support);
+		break;
+	case 2:
+		mpStateMachine->SetState(State::Block);
+		break;
+	case 3:
+		mpStateMachine->SetState(State::GetBack);
+		break;
+	case 4:
+		mpStateMachine->SetState(State::Pass);
+		break;
+	default:
+		break;
+	}
+
+
+
 }
