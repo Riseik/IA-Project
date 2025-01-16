@@ -18,12 +18,15 @@ class Player : public Entity
 		Count
 	};
 
+	float elapsedTime = 0.f;
+
 public:
 	const char* GetStateName(State state) const;
 
 protected:
 	void OnInitialize() override;
 	void OnUpdate() override;
+	void OnCollision(Entity* pEntity) override;
 
 	friend class PlayerAction_Idle;
 	friend class PlayerAction_Moving;

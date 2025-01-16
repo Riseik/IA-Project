@@ -18,6 +18,7 @@ class RugbyScene : public Scene
 public:
 	enum Tag {
 		PLAYER,
+		IMMUNE,
 		BALL
 	};
 
