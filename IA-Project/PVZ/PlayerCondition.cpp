@@ -85,10 +85,10 @@ bool PlayerCondition_BallPlayerBehind::OnTest(Player* owner)
 
 	if (team == scene->GetPlayerTeam(scene->playerWithBall))
 	{
-		if (team == scene->pTeam1 && scene->playerWithBall->GetPosition().x - 50.f < owner->GetPosition().x)
+		if (team == scene->pTeam1 && scene->playerWithBall->GetPosition().x - 100.f < owner->GetPosition().x)
 			return true;
 
-		else if (team == scene->pTeam2 && scene->playerWithBall->GetPosition().x + 50.f > owner->GetPosition().x)
+		else if (team == scene->pTeam2 && scene->playerWithBall->GetPosition().x + 100.f > owner->GetPosition().x)
 			return true;
 	}
 
