@@ -12,7 +12,9 @@ bool PlayerCondition_NoEnemyInArea::OnTest(Player* owner)
 bool PlayerCondition_CanPass::OnTest(Player* owner)
 {
 	RugbyScene* scene = owner->playerScene;
-	if (owner == scene->playerWithBall)
+	Player** team = scene->GetPlayerTeam(owner);
+
+	if (owner == scene->playerWithBall && owner->IsTag(RugbyScene::Tag::PLAYER))
 	{
 		Player** team;
 		if (scene->isInTeam(owner, scene->pTeam1))
@@ -23,8 +25,17 @@ bool PlayerCondition_CanPass::OnTest(Player* owner)
 		for (int i = 0; i < PLAYER_PER_TEAM; i++)
 		{
 			float a = scene->GetPlayerDistance(owner, team[i]);
-			if( std::sqrt(a) <= 100.f)
-				return true;
+			if (team == scene->pTeam1)
+			{
+				if (std::sqrt(a) <= 100.f && team[i]->GetPosition().x < owner->GetPosition().x)
+					return true;
+			}
+			else
+			{
+				if (std::sqrt(a) <= 100.f && team[i]->GetPosition().x > owner->GetPosition().x)
+					return true;
+			}
+
 		}
 	}
 

@@ -56,13 +56,17 @@ void PlayerAction_Block::OnStart(Player* pPlayer)
 
 void PlayerAction_Block::OnUpdate(Player* pPlayer)
 {
-	sf::Vector2f pos = pPlayer->playerScene->playerWithBall->GetPosition();
+	sf::Vector2f posBall = pPlayer->playerScene->playerWithBall->GetPosition();
+	sf::Vector2f pos = pPlayer->GetPosition();
 
-	if(pos.y > pPlayer->yArea.x + 10.f && pos.y < pPlayer->yArea.y - 10.f)
-		pPlayer->GoToDirection(pos.x, pos.y, pPlayer->speed);
+	if(posBall.y > pos.y && pos.y < pPlayer->yArea.y)
+		pPlayer->GoToDirection(posBall.x, posBall.y, pPlayer->speed);
+
+	else if (posBall.y < pos.y && pos.y > pPlayer->yArea.x)
+		pPlayer->GoToDirection(posBall.x, posBall.y, pPlayer->speed);
 
 	else
-		pPlayer->GoToDirection(pos.x, pPlayer->GetPosition().y, pPlayer->speed);
+		pPlayer->GoToDirection(posBall.x, pos.y, pPlayer->speed);
 }
 
 void PlayerAction_GetBack::OnStart(Player* pPlayer)

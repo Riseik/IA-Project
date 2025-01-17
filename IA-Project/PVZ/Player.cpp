@@ -148,6 +148,8 @@ void Player::OnCollision(Entity* pEntity)
 	}
 }
 
+
+
 void Player::IsImmune()
 {
 	if (IsTag(RugbyScene::Tag::IMMUNE))
@@ -194,23 +196,15 @@ void Player::SetYArea(int index)
 	switch (index)
 	{
 	case 0:
-		yArea = { 0.f, playerScene->height / 3.f};
+		yArea = { 0.f, playerScene->height / 2.f};
 		break;
 	case 1:
-		yArea = { playerScene->height / 3.f , (playerScene->height / 3.f) * 2.f};
+		yArea = { playerScene->height / 4.f , (playerScene->height / 4.f) * 3.f};
 		break;
 	case 2:
-		//yArea = { (playerScene->height / 3.f), playerScene->height};
+		yArea = { (playerScene->height / 2.f), (float)(playerScene->height)};
 		break;
 	default:
 		break;
-	}
-
-	if (GetScene<RugbyScene>()->playerWithBall != nullptr || GetScene<RugbyScene>()->playerWithBall == this)
-		return;
-
-	if (pEntity->IsTag(RugbyScene::Tag::BALL))
-	{
-		GetScene<RugbyScene>()->playerWithBall = this;
 	}
 }
