@@ -142,7 +142,7 @@ void Player::OnCollision(Entity* pEntity)
 		if (playerScene->playerWithBall == pEntity)
 		{
 			playerScene->playerWithBall = this;
-			playerScene->playerWithBall->speed = 100.f;
+			playerScene->playerWithBall->speed = 130.f;
 			SetTag(RugbyScene::Tag::IMMUNE);
 		}
 	}
@@ -157,7 +157,7 @@ void Player::IsImmune()
 		elapsedTime += GameManager::Get()->GetDeltaTime();
 		if (elapsedTime > 1.f)
 		{
-			playerScene->playerWithBall->speed = 50.f;
+			playerScene->playerWithBall->speed = 80.f;
 			SetTag(RugbyScene::Tag::PLAYER);
 			elapsedTime = 0.f;
 		}
