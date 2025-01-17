@@ -1,5 +1,3 @@
-#include <list>
-
 #include "RugbyScene.h"
 
 #include "Player.h"
@@ -64,6 +62,12 @@ void RugbyScene::OnEvent(const sf::Event& event)
 		Debug::DrawText(100, 100, "PASS", 1.f, 1.f, sf::Color::Red);
 		Pass();
 	}
+
+	if (event.type == event.KeyPressed && event.key.code == sf::Keyboard::Space)
+	{
+		float angle = GetAngle(playerWithBall->GetPosition(), pTeam1[1]->GetPosition(), pTeam1[3]->GetPosition());
+		Debug::DrawText(200, 200, std::to_string(angle), 1.f, 1.f, sf::Color::Red);
+	}
 }
 
 void RugbyScene::OnUpdate()
@@ -100,6 +104,10 @@ void RugbyScene::OnUpdate()
 			continue;
 		}
 		passPossible[i] = TryPassPossible(pTeam[i]);
+		if (passPossible[i])
+			passDangerous[i] = TryPassDangerous(pTeam[i]);
+		else
+			passDangerous[i] = false;
 
 		int indexOptimalPass = -1;
 		if (!CheckPassPossible()) indexOptimalPass = -1;
@@ -116,6 +124,8 @@ void RugbyScene::OnUpdate()
 
 		if (i == indexOptimalPass)
 			Debug::DrawLine(playerWithBall->GetPosition().x, playerWithBall->GetPosition().y, pTeam[i]->GetPosition().x, pTeam[i]->GetPosition().y, sf::Color::Blue);
+		else if (passDangerous[i])
+			Debug::DrawLine(playerWithBall->GetPosition().x, playerWithBall->GetPosition().y, pTeam[i]->GetPosition().x, pTeam[i]->GetPosition().y, {255, 128, 0});
 		else if (passPossible[i])
 			Debug::DrawLine(playerWithBall->GetPosition().x, playerWithBall->GetPosition().y, pTeam[i]->GetPosition().x, pTeam[i]->GetPosition().y, sf::Color::Green);
 		else
@@ -189,6 +199,8 @@ float RugbyScene::GetPlayerDistance(Player* p1, Player* p2)
 
 Player* RugbyScene::GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass)
 {
+	int indexClosestNotDangerous = -1;
+	float closestDistanceNotDangerous = 100000.f;
 	int indexClosest = 0;
 	float closestDistance = 100000.f;
 
@@ -202,14 +214,21 @@ Player* RugbyScene::GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass)
 
 		float distance = GetPlayerDistance(playerWithBall, pTeam[i]);
 
+		if (distance < closestDistanceNotDangerous && !passDangerous[i])
+		{
+			indexClosestNotDangerous = i;
+			closestDistanceNotDangerous = distance;
+		}
 		if (distance < closestDistance)
 		{
 			indexClosest = i;
 			closestDistance = distance;
 		}
 	}
-
-	return pTeam[indexClosest];
+	if (indexClosestNotDangerous != -1)
+		return pTeam[indexClosestNotDangerous];
+	else
+		return pTeam[indexClosest];
 }
 
 bool RugbyScene::isInTeam(Player* player, Player* pTeam[])
@@ -221,6 +240,59 @@ bool RugbyScene::isInTeam(Player* player, Player* pTeam[])
 			return true;
 		}
 	}
+	return false;
+}
+
+float RugbyScene::DotProduct(float v1x, float v2x, float v1y, float v2y)
+{
+	return v1x * v2x + v1y * v2y;
+}
+
+float RugbyScene::Magnitude(float x, float y)
+{
+	return std::sqrt(x * x + y * y);
+}
+
+float RugbyScene::GetAngle(sf::Vector2f pToAnalyze, sf::Vector2f p1, sf::Vector2f p2)
+{
+	float v1x = pToAnalyze.x - p1.x;
+	float v1y = pToAnalyze.y - p1.y;
+	float v2x = pToAnalyze.x - p2.x;
+	float v2y = pToAnalyze.y - p2.y;
+
+	float dot = DotProduct(v1x, v2x, v1y, v2y);
+
+	float magv1 = Magnitude(v1x, v1y);
+	float magv2 = Magnitude(v2x, v2y);
+
+	float cos = dot / (magv1 * magv2);
+	float radAngle = std::acos(cos);
+
+	return radAngle * (180.f / 3.14f);
+}
+
+bool RugbyScene::TryPassDangerous(Player* player)
+{
+	Player** pTeam;
+
+	if (isInTeam(player, pTeam1))
+		pTeam = pTeam2;
+	else
+		pTeam = pTeam1;
+
+	float playerDistance = GetPlayerDistance(playerWithBall, player);
+
+	for (int i = 0; i < PLAYER_PER_TEAM; i++)
+	{
+		float enemyDistance = GetPlayerDistance(playerWithBall, pTeam[i]);
+
+		if (enemyDistance > playerDistance) continue;
+
+		float angle = GetAngle(playerWithBall->GetPosition(), player->GetPosition(), pTeam[i]->GetPosition());
+
+		if (angle < 10.f + height * 0.035f) return true;
+	}
+
 	return false;
 }
 
@@ -252,6 +324,7 @@ void RugbyScene::Pass()
 {
 	if (!CheckPassPossible()) return;
 	Player* closestPlayer = GetClosestPlayer(pTeam1, true);
+	/*playerWithBall = nullptr;*/
+	/*ball->GoToPosition(closestPlayer->GetPosition().x, closestPlayer->GetPosition().y, 500.f);*/
 	playerWithBall = closestPlayer;
-	/*ball->GoToPosition(closestPlayer->GetPosition().x, closestPlayer->GetPosition().y, 300.f);*/
 }
