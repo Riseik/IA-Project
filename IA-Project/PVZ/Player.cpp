@@ -23,6 +23,11 @@ void Player::OnInitialize()
 			auto transition = pAttack->CreateTransition(State::Pass);
 			auto condition = transition->AddCondition<PlayerCondition_CanPass>();
 		}
+		//-> Block
+		{
+			auto transition = pAttack->CreateTransition(State::Block);
+			auto condition = transition->AddCondition<PlayerCondition_BallInEnemyTeam>();
+		}
 	}
 	
 
@@ -72,6 +77,11 @@ void Player::OnInitialize()
 	{
 		Action<Player>* pGetBack = mpStateMachine->CreateAction<PlayerAction_GetBack>(State::GetBack);
 
+		//-> Attack
+		{
+			auto transition = pGetBack->CreateTransition(State::Attack);
+			auto condition = transition->AddCondition<PlayerCondition_HaveBall>();
+		}
 		//-> Support
 		{
 			auto transition = pGetBack->CreateTransition(State::Support);
@@ -120,7 +130,7 @@ const char* Player::GetStateName(State state) const
 
 void Player::OnUpdate()
 {
-
+	IsImmune();
 	mpStateMachine->Update();
 }
 
@@ -132,6 +142,7 @@ void Player::OnCollision(Entity* pEntity)
 		if (playerScene->playerWithBall == pEntity)
 		{
 			playerScene->playerWithBall = this;
+			playerScene->playerWithBall->speed = 100.f;
 			SetTag(RugbyScene::Tag::IMMUNE);
 		}
 	}
@@ -142,8 +153,9 @@ void Player::IsImmune()
 	if (IsTag(RugbyScene::Tag::IMMUNE))
 	{
 		elapsedTime += GameManager::Get()->GetDeltaTime();
-		if (elapsedTime > 2.f)
+		if (elapsedTime > 1.f)
 		{
+			playerScene->playerWithBall->speed = 50.f;
 			SetTag(RugbyScene::Tag::PLAYER);
 			elapsedTime = 0.f;
 		}
@@ -175,4 +187,22 @@ void Player::SetPlayerState(int state)
 
 
 
+}
+
+void Player::SetYArea(int index)
+{
+	switch (index)
+	{
+	case 0:
+		yArea = { 0.f, playerScene->height / 3.f};
+		break;
+	case 1:
+		yArea = { playerScene->height / 3.f , (playerScene->height / 3.f) * 2.f};
+		break;
+	case 2:
+		//yArea = { (playerScene->height / 3.f), playerScene->height};
+		break;
+	default:
+		break;
+	}
 }

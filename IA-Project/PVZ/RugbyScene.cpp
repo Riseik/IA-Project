@@ -33,6 +33,22 @@ void RugbyScene::OnInitialize()
 		playerStartY += playerGapY;
 		playerStartX += playerGapX;
 		playerGapX = -playerGapX;
+
+		if (i == 0 || i == 1)
+		{
+			pTeam1[i]->SetYArea(0);
+			pTeam2[i]->SetYArea(0);
+		}
+		else if (i == 2)
+		{
+			pTeam1[i]->SetYArea(1);
+			pTeam2[i]->SetYArea(1);
+		}
+		else
+		{
+			pTeam1[i]->SetYArea(2);
+			pTeam2[i]->SetYArea(2);
+		}
 	}
 
 	float ballRadius = height * 0.020f;
@@ -264,7 +280,16 @@ bool RugbyScene::CheckPassPossible()
 void RugbyScene::Pass()
 {
 	if (!CheckPassPossible()) return;
-	Player* closestPlayer = GetClosestPlayer(pTeam1, true);
+
+	Player* closestPlayer;
+
+	if (GetPlayerTeam(playerWithBall) == pTeam1)
+	{
+		closestPlayer = GetClosestPlayer(pTeam1, true);
+	}
+	else
+		closestPlayer = GetClosestPlayer(pTeam2, true);
+
 	playerWithBall = closestPlayer;
 	/*ball->GoToPosition(closestPlayer->GetPosition().x, closestPlayer->GetPosition().y, 300.f);*/
 }

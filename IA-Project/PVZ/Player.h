@@ -23,13 +23,14 @@ class Player : public Entity
 
 	float elapsedTime = 0.f;
 	float speed = 100.f;
-
+	sf::Vector2f yArea;
 
 public:
 
 	const char* GetStateName(State state) const;
 	void IsImmune();
 	void SetPlayerState(int a);
+	void SetYArea(int index);
 
 protected:
 	void OnInitialize() override;
