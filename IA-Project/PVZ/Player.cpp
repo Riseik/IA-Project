@@ -205,4 +205,12 @@ void Player::SetYArea(int index)
 	default:
 		break;
 	}
+
+	if (GetScene<RugbyScene>()->playerWithBall != nullptr || GetScene<RugbyScene>()->playerWithBall == this)
+		return;
+
+	if (pEntity->IsTag(RugbyScene::Tag::BALL))
+	{
+		GetScene<RugbyScene>()->playerWithBall = this;
+	}
 }

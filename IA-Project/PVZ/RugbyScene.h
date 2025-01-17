@@ -32,14 +32,21 @@ public:
 	
 	Player* playerSelected;
 	Player* playerWithBall;
+	Player* lastplayerWithBall;
 
-	bool passPossible[5] = {false, false, false, false, false};
+	bool passPossible[PLAYER_PER_TEAM] = { false, false, false, false, false };
+	bool passDangerous[PLAYER_PER_TEAM] = { false, false, false, false, false };
 
 private:
 	void TrySetSelectedEntity(Player* player, int x, int y);
 	Player* GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass);
 
 
+	float DotProduct(float v1x, float v2x, float v1y, float v2y);
+	float Magnitude(float x, float y);
+	float GetAngle(sf::Vector2f pToAnalyze, sf::Vector2f p1, sf::Vector2f p2);
+
+	bool TryPassDangerous(Player* player);
 	bool TryPassPossible(Player* player);
 	bool CheckPassPossible();
 
