@@ -62,12 +62,6 @@ void RugbyScene::OnEvent(const sf::Event& event)
 		Debug::DrawText(100, 100, "PASS", 1.f, 1.f, sf::Color::Red);
 		Pass();
 	}
-
-	if (event.type == event.KeyPressed && event.key.code == sf::Keyboard::Space)
-	{
-		float angle = GetAngle(playerWithBall->GetPosition(), pTeam1[1]->GetPosition(), pTeam1[3]->GetPosition());
-		Debug::DrawText(200, 200, std::to_string(angle), 1.f, 1.f, sf::Color::Red);
-	}
 }
 
 void RugbyScene::OnUpdate()
