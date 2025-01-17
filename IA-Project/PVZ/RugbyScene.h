@@ -53,6 +53,7 @@ public:
 
 	float GetPlayerDistance(Player* p1, Player* p2);
 	bool isInTeam(Player* player, Player* pTeam[]);
+	Player** GetPlayerTeam(Player* player);
 	void Pass();
 
 

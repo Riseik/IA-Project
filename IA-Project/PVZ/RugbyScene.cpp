@@ -229,6 +229,14 @@ bool RugbyScene::isInTeam(Player* player, Player* pTeam[])
 	return false;
 }
 
+Player** RugbyScene::GetPlayerTeam(Player* player)
+{
+	if (isInTeam(player, pTeam1))
+		return pTeam1;
+	else
+		return pTeam2;
+}
+
 bool RugbyScene::TryPassPossible(Player* player)
 {
 	if (sqrt(GetPlayerDistance(playerWithBall, player)) > 300)
