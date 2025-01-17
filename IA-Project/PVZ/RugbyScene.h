@@ -37,7 +37,6 @@ public:
 
 private:
 	void TrySetSelectedEntity(Player* player, int x, int y);
-	float GetPlayerDistance(Player* p1, Player* p2);
 	Player* GetClosestPlayer(Player* pTeam[], bool sortedByPossiblePass);
 
 
@@ -52,6 +51,7 @@ public:
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
 
+	float GetPlayerDistance(Player* p1, Player* p2);
 	bool isInTeam(Player* player, Player* pTeam[]);
 	void Pass();
 
